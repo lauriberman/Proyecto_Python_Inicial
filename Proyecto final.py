@@ -91,11 +91,10 @@ if __name__ == '__main__':
     print('Bienvenidxs a Yey House!')
     read_csv()
 
-    respuesta_usuario = input('Te interesa comprar otro producto?\n').upper
+    respuesta_usuario = input('Te interesa comprar otro producto?\n').upper()
     
     if respuesta_usuario == 'SI':
         read_csv()
-    else: 
 
         # Generar un archivo csv nuevo con la confirmacion del/de los producto(s) 
         # comprados por el usuario
