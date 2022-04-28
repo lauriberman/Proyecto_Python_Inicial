@@ -46,7 +46,6 @@ def read_csv():
         
 
     # Si lo está, imprimir las prendas que tenga esa marca en el local
-    # separar funcion? 
 
   
     for prenda in data: # Acceder a cada prenda de la lista data
@@ -67,7 +66,6 @@ def read_csv():
         print('La prenda ingresada no se encuentra disponible.')
 
         # volver a preguntar?
-        # separar funcion? 
 
     for prenda in data:
         if prenda['PRENDA'] == prenda_elegida:
@@ -93,7 +91,6 @@ def read_csv():
         print('Lo sentimos mucho. La prenda que elegiste no tiene ese talle.')
 
 
-    # separar funcion?
     # Cantidad que va a llevar? 
 
     cantidad_prenda = int(input('Qué cantidad de tu prenda querés llevar?\n'))
@@ -107,7 +104,7 @@ def read_csv():
     if int(v)  < cantidad_prenda:
         print('No tenemos stock disponible para tu prenda.')
 
-        # preguntar si quiere comprar otro producto
+        # preguntar si quiere comprar otro producto?
                     
     for prenda in data:
         if prenda['PRENDA'] == prenda_elegida and prenda['TALLE'] == talle_prenda:
@@ -134,23 +131,6 @@ def compra_csv():
         writer.writeheader()
         writer.writerow({'YEY HOUSE': datetime.today().strftime('%d-%m-%Y')})
       
-    
-
-#def imprimir_producto(producto):
- # nombre = producto.get('nombre')
-  #precio = producto.get('precio')
-  #print(f'producto {nombre} precio {precio}')
-
-#if __name__ == '__main__':
-  # Leo un csv
- # with open('archivo.csv', 'r') as csvfile:
-  #  data = list(csv.DictReader(csvfile))
-  
-  # Agarro como producto al primer elemento de data  
-  #nuevo_producto = data[0]
-  # Ejemplo, nuevo_producto ahora podría ser {'nombre': 'Vaso', 'precio': 100}
-  #imprimir_producto(nuevo_producto)
-
 
 
 if __name__ == '__main__':
@@ -168,6 +148,3 @@ if __name__ == '__main__':
         # Generar un archivo csv nuevo con la confirmacion del/de los producto(s) 
         # comprados por el usuario
 
-
-
-# datetime.today().strftime('%d-%m-%Y')
