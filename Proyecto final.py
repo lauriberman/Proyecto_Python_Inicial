@@ -10,6 +10,8 @@ from collections import OrderedDict
 from datetime import datetime
 from email import header
 
+carrito = []
+
 # Funciones
 
 # Abrir y leer archivo CSV
@@ -42,7 +44,8 @@ def read_csv():
     if marca_ingresada in lista_marcas:
         print('Gracias por elegir', marca_ingresada,'! Estas son las prendas que tiene la marca en Yey House:\n')
     else:
-        print('La marca ingresada no se encuentra en nuestro local.')
+        print('La marca ingresada no se encuentra en nuestro local. Pruebe de nuevo.')
+        read_csv()
         
 
     # Si lo está, imprimir las prendas que tenga esa marca en el local
@@ -63,9 +66,9 @@ def read_csv():
     if prenda_elegida in lista_prendas_ordenada:
         print('Excelente! Aquí los detalles de la prenda que elegiste:\n')
     else: 
-        print('La prenda ingresada no se encuentra disponible.')
+        print('La prenda ingresada no se encuentra disponible. Pruebe de nuevo.')
+        prenda_elegida = input('Ingrese la prenda que desea comprar:\n').upper()
 
-        # volver a preguntar?
 
     for prenda in data:
         if prenda['PRENDA'] == prenda_elegida:
@@ -88,7 +91,8 @@ def read_csv():
     if talle_prenda in lista_talles:
         print('Perfecto! Tu compra está a un simple paso de ser finalizada!\n')
     else: 
-        print('Lo sentimos mucho. La prenda que elegiste no tiene ese talle.')
+        print('Lo sentimos mucho. La prenda que elegiste no tiene ese talle o los datos ingresados no fueron correctos.')
+        read_csv()
 
 
     # Cantidad que va a llevar? 
@@ -102,10 +106,10 @@ def read_csv():
                     print('Excelente! Contamos con stock suficiente.')
     
     if int(v)  < cantidad_prenda:
-        print('No tenemos stock disponible para tu prenda.')
+        print('Lo sentimos! No tenemos stock disponible para tu prenda.')
+        read_csv()
 
-        # preguntar si quiere comprar otro producto?
-                    
+
     for prenda in data:
         if prenda['PRENDA'] == prenda_elegida and prenda['TALLE'] == talle_prenda:
             for k, v in prenda.items():
@@ -114,23 +118,32 @@ def read_csv():
                    
     print('El costo de la prenda por unidad es:',costo_unidad)
     
-    producto = print('Resumen de compra: MARCA:', marca_ingresada,
-     'PRENDA:', prenda_elegida,
-     'PRECIO UNIDAD:', costo_unidad, 
-     'TALLE:', talle_prenda,
-     'CANTIDAD:', cantidad_prenda)
+    producto = {'MARCA': marca_ingresada,
+     'PRENDA': prenda_elegida,
+     'PRECIO UNIDAD': costo_unidad, 
+     'TALLE': talle_prenda,
+     'CANTIDAD': cantidad_prenda,
+     'FECHA' : datetime.today().strftime('%d-%m-%Y')}
+
+    print('Resumen de tu compra:\n', producto)
+    carrito.append(producto)
+
     
 
 def compra_csv():
 
+    print('Tu carrito de compras:')
+    print(carrito)
 
-    with open('compra_final.csv', 'w') as csvfile:
-        header = ['YEY HOUSE', 'MARCA', 'PRENDA', 'PRECIO', 'TALLE', 'CANTIDAD']
+
+    with open('Resumen_de_compra.csv', 'w') as csvfile:
+        header = ['YEY HOUSE', 'MARCA', 'PRENDA', 'PRECIO UNIDAD', 'TALLE', 'CANTIDAD','FECHA']
         writer = csv.DictWriter(csvfile,fieldnames=header)
 
         writer.writeheader()
-        writer.writerow({'YEY HOUSE': datetime.today().strftime('%d-%m-%Y')})
-      
+        for row in carrito:
+            writer.writerow(row)
+
 
 
 if __name__ == '__main__':
@@ -140,11 +153,17 @@ if __name__ == '__main__':
 
     respuesta_usuario = input('Te interesa comprar otro producto?\n').upper()
     
-    if respuesta_usuario == 'SI':
+    while respuesta_usuario == 'SI':
         read_csv()
-    else:
-        compra_csv()
+        respuesta_usuario = input('Te interesa comprar otro producto?\n').upper()
 
         # Generar un archivo csv nuevo con la confirmacion del/de los producto(s) 
         # comprados por el usuario
+
+    compra_csv()
+
+    print('Se generó un archivo con éxito con el resumen de tu compra.')
+    print('Gracias por comprar en Yey House!')
+
+       
 
