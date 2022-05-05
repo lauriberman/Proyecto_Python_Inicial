@@ -95,6 +95,16 @@ def read_csv():
         read_csv()
 
 
+    for prenda in data:
+        if prenda['PRENDA'] == prenda_elegida and prenda['TALLE'] == talle_prenda:
+            for k, v in prenda.items():
+                if k == 'PRECIO':
+                    costo_unidad = v
+                   
+    print('El costo de la prenda por unidad es:',costo_unidad)
+    
+
+
     # Cantidad que va a llevar? 
 
     cantidad_prenda = int(input('Qué cantidad de tu prenda querés llevar?\n'))
@@ -104,29 +114,21 @@ def read_csv():
             for k, v in prenda.items():
                 if k == 'STOCK' and int(v) >= cantidad_prenda:
                     print('Excelente! Contamos con stock suficiente.')
+
+                    producto = {'MARCA': marca_ingresada,
+                    'PRENDA': prenda_elegida,
+                    'PRECIO UNIDAD': costo_unidad, 
+                    'TALLE': talle_prenda,
+                    'CANTIDAD': cantidad_prenda,
+                    'FECHA' : datetime.today().strftime('%d-%m-%Y')}
+
+                    carrito.append(producto)
+                    print('Resumen de tu compra:\n', producto)
+
     
     if int(v)  < cantidad_prenda:
         print('Lo sentimos! No tenemos stock disponible para tu prenda.')
         read_csv()
-
-
-    for prenda in data:
-        if prenda['PRENDA'] == prenda_elegida and prenda['TALLE'] == talle_prenda:
-            for k, v in prenda.items():
-                if k == 'PRECIO':
-                    costo_unidad = v
-                   
-    print('El costo de la prenda por unidad es:',costo_unidad)
-    
-    producto = {'MARCA': marca_ingresada,
-     'PRENDA': prenda_elegida,
-     'PRECIO UNIDAD': costo_unidad, 
-     'TALLE': talle_prenda,
-     'CANTIDAD': cantidad_prenda,
-     'FECHA' : datetime.today().strftime('%d-%m-%Y')}
-
-    print('Resumen de tu compra:\n', producto)
-    carrito.append(producto)
 
     
 
@@ -136,8 +138,8 @@ def compra_csv():
     print(carrito)
 
 
-    with open('Resumen_de_compra.csv', 'w') as csvfile:
-        header = ['YEY HOUSE', 'MARCA', 'PRENDA', 'PRECIO UNIDAD', 'TALLE', 'CANTIDAD','FECHA']
+    with open('Yey_House.csv', 'w') as csvfile:
+        header = ['MARCA', 'PRENDA', 'PRECIO UNIDAD', 'TALLE', 'CANTIDAD','FECHA']
         writer = csv.DictWriter(csvfile,fieldnames=header)
 
         writer.writeheader()
