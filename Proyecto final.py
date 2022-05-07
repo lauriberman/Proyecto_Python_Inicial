@@ -6,7 +6,8 @@
 
 import csv 
 
-from collections import OrderedDict 
+from collections import OrderedDict
+from dataclasses import dataclass 
 from datetime import datetime
 from email import header
 
@@ -104,7 +105,6 @@ def read_csv():
     print('El costo de la prenda por unidad es:',costo_unidad)
     
 
-
     # Cantidad que va a llevar? 
 
     cantidad_prenda = int(input('Qué cantidad de tu prenda querés llevar?\n'))
@@ -113,6 +113,8 @@ def read_csv():
         if prenda['PRENDA'] == prenda_elegida and prenda['TALLE'] == talle_prenda:
             for k, v in prenda.items():
                 if k == 'STOCK' and int(v) >= cantidad_prenda:
+                    nuevo_stock = int(v) - cantidad_prenda
+                    prenda['STOCK'] = nuevo_stock
                     print('Excelente! Contamos con stock suficiente.')
 
                     producto = {'MARCA': marca_ingresada,
@@ -120,10 +122,19 @@ def read_csv():
                     'PRECIO UNIDAD': costo_unidad, 
                     'TALLE': talle_prenda,
                     'CANTIDAD': cantidad_prenda,
-                    'FECHA' : datetime.today().strftime('%d-%m-%Y')}
+                    'FECHA' : datetime.today().strftime('%d-%m-%Y')} 
 
                     carrito.append(producto)
                     print('Resumen de tu compra:\n', producto)
+
+                    csvfile = open('yeyhousestock.csv', 'w')
+                    
+                    header = ['MARCA', 'PRENDA', 'PRECIO', 'TALLE', 'STOCK']
+
+                    writer = csv.DictWriter(csvfile, fieldnames=header)
+                    writer.writeheader()
+                    writer.writerows(data)
+                    csvfile.close()
 
     
     if int(v)  < cantidad_prenda:
